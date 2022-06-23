@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import sig.controller.ActionHandeler;
 import sig.model.InvoiceHeader;
 import sig.model.invHeaderTableModel;
@@ -288,25 +290,7 @@ public class NewJFrame extends javax.swing.JFrame
     private ArrayList<InvoiceHeader> invoiceHeadersList;
     private invHeaderTableModel headerTableModel;
 
-    /*
- public ActionHandeler getController() {
-        return handeler;
-    }
-
-    public ArrayList<InvoiceHeader> getInvoiceHeadersList() {
-        return invoiceHeadersList;
-    }
-
-    
-
-    public JTable getInvHeaderTable() {
-        return invHeaderTable;
-    }
-
-    public JTable getInvLineTable() {
-        return invLineTable;
-    }
-    */
+  
 
     public ActionHandeler getHandeler() {
         return handeler;
@@ -317,12 +301,18 @@ public class NewJFrame extends javax.swing.JFrame
     }
 public void setInvoiceHeadersList(ArrayList<InvoiceHeader> invoiceHeadersList) {
         this.invoiceHeadersList = invoiceHeadersList;
-        headerTableModel = new invHeaderTableModel(invoiceHeadersList);
+      invHeaderTableModel  headerTableModel = new invHeaderTableModel(invoiceHeadersList);
         this.headerTable.setModel(headerTableModel);
     }
     public ArrayList<InvoiceHeader> getInvoiceHeadersList() {
         return invoiceHeadersList;
     }
+ public JTable getInvHeaderTable() {
+        return headerTable;
+    }
 
+    public JTable getInvLineTable() {
+        return lineTable;
+    }
    
 }

@@ -2,28 +2,32 @@
 package sig.model;
 
 import java.util.ArrayList;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 
-public class invLineTableModel {
+public class invLineTableModel extends AbstractTableModel {
     
      private ArrayList<InvoiceLine> data;
-    private String[] cols = {"Item Name", "Unit Price", "Count"};
+    private String[] cols = {"Item Name", "Unit Price", "Count","Total"};
 
     public invLineTableModel(ArrayList<InvoiceLine> data) {
         this.data = data;
     }
     
+     @Override
      public int getRowCount() {
         return data.size();
     }
 
    
+     @Override
     public int getColumnCount() {
         return cols.length;
     }
 
     
+     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         InvoiceLine line = data.get(rowIndex);
         switch(columnIndex) {
@@ -33,38 +37,18 @@ public class invLineTableModel {
                 return line.getPrice();
             case 2:
                 return line.getCount();
+                case 3:
+                return line.getLineTotal();
         }
         return "";
     }
 
+     @Override
         public String getColumnName(int column) {
         return cols[column];
     }
     
    
-/*    
-        DefaultTableModel lineModel = new DefaultTableModel();
-
-
-    public void createLineModel(DefaultTableModel model ){
-    
-        lineModel= model;
- String[] columnNames = new String[]{
-            "invoice Number", "Item Name", "Pricce", "Count","Total"};
-        lineModel.setColumnIdentifiers(columnNames);
-        //lineModel.addRow(columnNames);
-        //System.out.println("before");
-        for (int j = 0; j < (lineModel.getRowCount()); j++) {
-            for (int i = 0; i < lineModel.getColumnCount(); i++) {
-                System.out.println(lineModel.getValueAt(j, i));
-            }
-           System.out.println("**lines**");
-        }
-
-        
-        
-  */      
-        
 }
     
 

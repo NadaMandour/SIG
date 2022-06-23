@@ -47,7 +47,11 @@ public class InvoiceHeader {
     }
 
     public ArrayList<InvoiceLine> getLines() {
+         if (lines == null) {
+            lines = new ArrayList<>();
+        }
         return lines;
+        
     }
 
     public void setLines(ArrayList<InvoiceLine> lines) {
@@ -66,11 +70,7 @@ public class InvoiceHeader {
         return "InvoiceHeader{" + "Invoice Num.=" + num + ", CustomerName=" + customer + ", Date=" + date + '}';
     }
 
-    public ArrayList<InvoiceLine> getLines() {
-        if (lines == null) {
-            lines = new ArrayList<>();
-        }
-        return lines;
-    }
+
+   
     
 }

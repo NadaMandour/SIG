@@ -24,12 +24,14 @@ import sig.model.InvoiceHeader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import sig.model.invHeaderTableModel;
 import sig.model.invLineTableModel;
 import sig.view.NewJFrame;
 
-public class ActionHandeler implements ActionListener {
+public class ActionHandeler implements ActionListener, ListSelectionListener {
 
     private NewJFrame frame;
 
@@ -70,6 +72,18 @@ public class ActionHandeler implements ActionListener {
 
     }
 
+      @Override
+    public void valueChanged(ListSelectionEvent e) {
+
+ System.out.println("Row Selected");
+        int selectedRow = frame.getInvHeaderTable().getSelectedRow();
+        System.out.println(selectedRow);
+        ArrayList<InvoiceLine> lines = frame.getInvoiceHeadersList().get(selectedRow).getLines();
+        frame.getInvLineTable().setModel(new invLineTableModel(lines));
+  
+    }
+    
+    
     /**
      * ********************************************
      */
@@ -78,13 +92,12 @@ public class ActionHandeler implements ActionListener {
     Date invoiceDate = null;
     InvoiceHeader invHeder;
     JTable headerTable = new JTable();
-    invHeaderTableModel headerModel = new invHeaderTableModel();
-    invLineTableModel lineModel = new invLineTableModel();
-
+    
     /**
      * " New Invoice" **********************************
      */
     private void newInvoice() {
+        JFrame frame = new JFrame();
 
         frame.setTitle("New Invoice");
         System.out.println("Action New Invoie");
@@ -111,6 +124,8 @@ public class ActionHandeler implements ActionListener {
 
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
+                                ArrayList<InvoiceHeader> invoiceHeadersList = new ArrayList<>();
+
                 System.out.println("action from Ok Btn");
                 invoiceCustomer = customer.getText();
                 try {
@@ -118,13 +133,13 @@ public class ActionHandeler implements ActionListener {
                 } catch (ParseException ex) {
                 }
                 invHeder = new InvoiceHeader(invoiceNum, invoiceCustomer, invoiceDate);
+                                    invoiceHeadersList.add(invHeder);
+
                 System.out.println("customer=  " + invoiceCustomer + "   Date= " + invoiceDate);
                 frame.getContentPane().removeAll();
                 frame.repaint();
                 frame.setVisible(false);
-
-                String[] rowData = {String.valueOf(invHeder.getNum()),
-                    invHeder.getDate().toString(), invHeder.getCustomer()};
+               // String[] rowData = {String.valueOf(invHeder.getNum()),invHeder.getDate().toString(), invHeder.getCustomer()};
 
                 // headerModel.createHeaderModel((headerModel.addRow(rowData)));
 //headerTable.setModel(model);
@@ -324,9 +339,10 @@ public class ActionHandeler implements ActionListener {
                         double itemPrice = Double.valueOf(itemPriceS);
                         int itemCount = Integer.valueOf(itemCountS);
                         InvoiceHeader header = getInvoiceHeaderById(invoiceHeadersList, invNumber);/*= findInvoice(invNumber);*/
-                        InvoiceLine invLine = new InvoiceLine(invHeder, itemName, price, count);
+                        InvoiceLine invLine = new InvoiceLine(header, itemName, price, count);
                         header.getLines().add(invLine);
                         //System.out.println(" invNum" + invNumS + "{ Item Name= " + itemName + "Item Price= " + itemPriceS + "Count= " + itemCountS + "}\n");
+                        System.out.println(" invNum" + invNumber + "{ Item Name= " + itemName + "Item Price= " + itemPrice + "Count= " + itemCount + "}\n");
 
                     }
                      frame.setInvoiceHeadersList(invoiceHeadersList);
@@ -386,5 +402,7 @@ public class ActionHandeler implements ActionListener {
 
         }
     }
+
+  
 
 }

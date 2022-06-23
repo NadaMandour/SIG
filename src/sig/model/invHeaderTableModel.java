@@ -1,23 +1,27 @@
 package sig.model;
 
 import java.util.ArrayList;
+import javax.swing.table.AbstractTableModel;
 
-public class invHeaderTableModel  {
+public class invHeaderTableModel extends AbstractTableModel {
  private ArrayList<InvoiceHeader> data;
-    private String[] cols = {"Id", "Customer Name", "Invoice Date"};
+    private String[] cols = {"Num", "Customer Name", "Invoice Date"};
 
     public invHeaderTableModel(ArrayList<InvoiceHeader> data) {
         this.data = data;
     }
     
+ @Override
     public int getRowCount() {
         return data.size();
     }
 
+ @Override
     public int getColumnCount() {
         return cols.length;
     }
 
+ @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         InvoiceHeader header = data.get(rowIndex);
         switch (columnIndex) {
@@ -27,40 +31,16 @@ public class invHeaderTableModel  {
                 return header.getCustomer();
             case 2:
                 return header.getDate();
+                
         }
         return "";
     }
 
+ @Override
     public String getColumnName(int column) {
         return cols[column];
     }
     
     
     
-    
-    /*public void createHeaderModel(DefaultTableModel model) {
-
-        headerModel = model;
-        String[] columnNames = new String[]{
-            "No.", "Date", "Customer", "Total"
-        };
-       
-        headerModel.setColumnIdentifiers(columnNames);
-       // headerModel.addRow(columnNames);
-                  System.out.println("***before***");
-
-        for (int j = 0; j < headerModel.getRowCount(); j++) {
-            for (int i = 0; i < headerModel.getColumnCount(); i++) {
-                System.out.println(headerModel.getValueAt(j, i));
-            }
-           System.out.println("****");
-        }
-
-    }
-   
-
-    public invHeaderTableModel getModel() {
-        return (invHeaderTableModel) headerModel;
-
-    }*/
-}
+   }
