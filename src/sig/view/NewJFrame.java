@@ -308,11 +308,14 @@ public void setInvoiceHeadersList(ArrayList<InvoiceHeader> invoiceHeadersList) {
     }
 public void setInvoiceLinesList(ArrayList<InvoiceLine> invoiceLinesList) {
         this.invoiceLinesList = invoiceLinesList;
-      invLineTableModel  headerTableModel = new invLineTableModel(invoiceLinesList);
-        this.headerTable.setModel(headerTableModel);
+      invLineTableModel  lineTableModel = new invLineTableModel(invoiceLinesList);
+        this.lineTable.setModel(lineTableModel);
     }
     public ArrayList<InvoiceHeader> getInvoiceHeadersList() {
         return invoiceHeadersList;
+    }
+    public ArrayList<InvoiceLine> getInvoiceLinesList() {
+        return invoiceLinesList;
     }
  public JTable getInvHeaderTable() {
         return headerTable;

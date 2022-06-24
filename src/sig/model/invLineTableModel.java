@@ -14,6 +14,10 @@ public class invLineTableModel extends AbstractTableModel {
     public invLineTableModel(ArrayList<InvoiceLine> data) {
         this.data = data;
     }
+    public  void addRowLine(){
+        
+    }
+    
     
      @Override
      public int getRowCount() {
