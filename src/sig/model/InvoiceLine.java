@@ -13,6 +13,8 @@ public class InvoiceLine {
         this.name = name;
         this.price = price;
         this.count = count;
+        System.out.println(" from line********"+ "{ Item Name= " + name + "Item Price= " + price + "Count= " + count + "}\n");
+
     }
 
     public int getCount() {

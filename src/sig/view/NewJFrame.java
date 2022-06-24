@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import sig.controller.ActionHandeler;
 import sig.model.InvoiceHeader;
+import sig.model.InvoiceLine;
 import sig.model.invHeaderTableModel;
 import sig.model.invLineTableModel;
 
@@ -288,6 +289,7 @@ public class NewJFrame extends javax.swing.JFrame
     // End of variables declaration//GEN-END:variables
         private ActionHandeler handeler;
     private ArrayList<InvoiceHeader> invoiceHeadersList;
+     private ArrayList<InvoiceLine> invoiceLinesList; 
     private invHeaderTableModel headerTableModel;
 
   
@@ -302,6 +304,11 @@ public class NewJFrame extends javax.swing.JFrame
 public void setInvoiceHeadersList(ArrayList<InvoiceHeader> invoiceHeadersList) {
         this.invoiceHeadersList = invoiceHeadersList;
       invHeaderTableModel  headerTableModel = new invHeaderTableModel(invoiceHeadersList);
+        this.headerTable.setModel(headerTableModel);
+    }
+public void setInvoiceLinesList(ArrayList<InvoiceLine> invoiceLinesList) {
+        this.invoiceLinesList = invoiceLinesList;
+      invLineTableModel  headerTableModel = new invLineTableModel(invoiceLinesList);
         this.headerTable.setModel(headerTableModel);
     }
     public ArrayList<InvoiceHeader> getInvoiceHeadersList() {

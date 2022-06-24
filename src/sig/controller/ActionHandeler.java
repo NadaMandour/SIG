@@ -72,18 +72,17 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
     }
 
-      @Override
+    @Override
     public void valueChanged(ListSelectionEvent e) {
 
- System.out.println("Row Selected");
+        System.out.println("Row Selected");
         int selectedRow = frame.getInvHeaderTable().getSelectedRow();
         System.out.println(selectedRow);
         ArrayList<InvoiceLine> lines = frame.getInvoiceHeadersList().get(selectedRow).getLines();
         frame.getInvLineTable().setModel(new invLineTableModel(lines));
-  
+
     }
-    
-    
+
     /**
      * ********************************************
      */
@@ -92,14 +91,14 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
     Date invoiceDate = null;
     InvoiceHeader invHeder;
     JTable headerTable = new JTable();
-    
+
     /**
      * " New Invoice" **********************************
      */
     private void newInvoice() {
-        JFrame frame = new JFrame();
+        JFrame frame1 = new JFrame();
 
-        frame.setTitle("New Invoice");
+        frame1.setTitle("New Invoice");
         System.out.println("Action New Invoie");
 
         JTextField invDate = new JTextField(20);
@@ -111,20 +110,20 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         cancelBtn.setActionCommand("cancelInv");
         cancelBtn.addActionListener(this);
 
-        frame.setLayout(new FlowLayout());
+        frame1.setLayout(new FlowLayout());
 
-        frame.add(new JLabel("Invoce Date"));
-        frame.add(invDate); //textfield
-        frame.add(new JLabel("Customer"));
-        frame.add(customer);//textfield
+        frame1.add(new JLabel("Invoce Date"));
+        frame1.add(invDate); //textfield
+        frame1.add(new JLabel("Customer"));
+        frame1.add(customer);//textfield
 
-        frame.add(okBtn);
-        frame.add(cancelBtn);
+        frame1.add(okBtn);
+        frame1.add(cancelBtn);
 //parameters
 
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
-                                ArrayList<InvoiceHeader> invoiceHeadersList = new ArrayList<>();
+                // ArrayList<InvoiceHeader> invoiceHeadersList = new ArrayList<>();
 
                 System.out.println("action from Ok Btn");
                 invoiceCustomer = customer.getText();
@@ -132,14 +131,18 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                     invoiceDate = new SimpleDateFormat("dd/MM/yyyy").parse(invDate.getText());
                 } catch (ParseException ex) {
                 }
+                //invoiceNum = invoiceNum+(invHeder.getNum());
+                //         System.out.println("inv num +++  "+ invoiceNum);
+
                 invHeder = new InvoiceHeader(invoiceNum, invoiceCustomer, invoiceDate);
-                                    invoiceHeadersList.add(invHeder);
+                invoiceHeadersList.add(invHeder);
+                frame.setInvoiceHeadersList(invoiceHeadersList);
 
                 System.out.println("customer=  " + invoiceCustomer + "   Date= " + invoiceDate);
-                frame.getContentPane().removeAll();
-                frame.repaint();
-                frame.setVisible(false);
-               // String[] rowData = {String.valueOf(invHeder.getNum()),invHeder.getDate().toString(), invHeder.getCustomer()};
+                frame1.getContentPane().removeAll();
+                frame1.repaint();
+                frame1.setVisible(false);
+                // String[] rowData = {String.valueOf(invHeder.getNum()),invHeder.getDate().toString(), invHeder.getCustomer()};
 
                 // headerModel.createHeaderModel((headerModel.addRow(rowData)));
 //headerTable.setModel(model);
@@ -148,17 +151,17 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         cancelBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("action from cancel Btn");
-                frame.getContentPane().removeAll();
-                frame.repaint();
-                frame.setVisible(false);
+                frame1.getContentPane().removeAll();
+                frame1.repaint();
+                frame1.setVisible(false);
 
             }
         });
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(350, 150);
-        frame.setLocation(100, 100);
-        frame.setVisible(true);
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setSize(350, 150);
+        frame1.setLocation(100, 100);
+        frame1.setVisible(true);
 
     }
 
@@ -194,12 +197,13 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
     String itmName = null;
     double price;
     int count;
+    ArrayList<InvoiceLine> invoiceLinesList = new ArrayList<>();
 
     private void newItem() {
-        JFrame frame = new JFrame();
+        JFrame frame1 = new JFrame();
 
         System.out.println("Action New Item");
-        frame.setTitle(" New Item");
+        frame1.setTitle(" New Item");
 
         JTextField itemName = new JTextField(20);
         JTextField itemCount = new JTextField(20);
@@ -212,15 +216,15 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         cancelBtn.setActionCommand("cancelItm");
         cancelBtn.addActionListener(this);
 
-        frame.setLayout(new FlowLayout());
-        frame.add(new JLabel("Item Name"));
-        frame.add(itemName);
-        frame.add(new JLabel("Item Count"));
-        frame.add(itemCount);
-        frame.add(new JLabel("Price     "));
-        frame.add(ItemPrice);
-        frame.add(okBtn);
-        frame.add(cancelBtn);
+        frame1.setLayout(new FlowLayout());
+        frame1.add(new JLabel("Item Name"));
+        frame1.add(itemName);
+        frame1.add(new JLabel("Item Count"));
+        frame1.add(itemCount);
+        frame1.add(new JLabel("Price     "));
+        frame1.add(ItemPrice);
+        frame1.add(okBtn);
+        frame1.add(cancelBtn);
 
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
@@ -228,29 +232,37 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 itmName = itemName.getText();
                 price = Integer.valueOf(ItemPrice.getText());
                 count = Integer.valueOf(itemCount.getText());
-                InvoiceLine invLine = new InvoiceLine(invHeder, itmName, price, count);
+                // InvoiceLine invLine = new InvoiceLine(invHeder, itmName, price, count);
+                
                 System.out.println("invoiceHeder=" + invHeder + " item Name= " + itmName + " Price= " + price + "Count= " + count);
+                //InvoiceHeader header = getInvoiceHeaderById(invoiceHeadersList, invoiceNum);
+                /*= findInvoice(invNumber);*/
+                System.out.println("invoiceHeder*******=" + invHeder + " item Name= " + itmName + " Price= " + price + "Count= " + count);
 
-                frame.getContentPane().removeAll();
-                frame.repaint();
-                frame.setVisible(false);
+                InvoiceLine invLine = new InvoiceLine(invHeder, itmName, price, count);
+                invHeder.getLines().add(invLine);
+                frame.setInvoiceLinesList(invoiceLinesList);
+
+                frame1.getContentPane().removeAll();
+                frame1.repaint();
+                frame1.setVisible(false);
 
             }
         });
         cancelBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("action from cancel Btn");
-                frame.getContentPane().removeAll();
-                frame.repaint();
-                frame.setVisible(false);
+                frame1.getContentPane().removeAll();
+                frame1.repaint();
+                frame1.setVisible(false);
 
             }
         });
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(350, 200);
-        frame.setLocation(100, 100);
-        frame.setVisible(true);
+        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame1.setSize(350, 200);
+        frame1.setLocation(100, 100);
+        frame1.setVisible(true);
 
     }
 
@@ -286,8 +298,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
     /**
      * ************************************************
      */
-    DefaultTableModel modelH = new DefaultTableModel();
-    DefaultTableModel modelL = new DefaultTableModel();
+    ArrayList<InvoiceHeader> invoiceHeadersList = new ArrayList<>();
 
     private void loadeFile() {
         System.out.println("Action Load File");
@@ -301,7 +312,6 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
             try {
                 BufferedReader buffer = new BufferedReader(new FileReader(file));
                 String fileHeadLines = null;
-                ArrayList<InvoiceHeader> invoiceHeadersList = new ArrayList<>();
                 while ((fileHeadLines = buffer.readLine()) != null) {
                     String[] dataInHeaderRow = fileHeadLines.split(",");
 
@@ -316,7 +326,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
                     InvoiceHeader invHeader = new InvoiceHeader(invNum, customerName, invDate);
                     invoiceHeadersList.add(invHeader);
-                    
+
                 }
                 System.out.println("check");
 
@@ -339,13 +349,12 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                         double itemPrice = Double.valueOf(itemPriceS);
                         int itemCount = Integer.valueOf(itemCountS);
                         InvoiceHeader header = getInvoiceHeaderById(invoiceHeadersList, invNumber);/*= findInvoice(invNumber);*/
-                        InvoiceLine invLine = new InvoiceLine(header, itemName, price, count);
+                        InvoiceLine invLine = new InvoiceLine(header, itemName, itemPrice, itemCount);
                         header.getLines().add(invLine);
-                        //System.out.println(" invNum" + invNumS + "{ Item Name= " + itemName + "Item Price= " + itemPriceS + "Count= " + itemCountS + "}\n");
-                        System.out.println(" invNum" + invNumber + "{ Item Name= " + itemName + "Item Price= " + itemPrice + "Count= " + itemCount + "}\n");
+                        //System.out.println(" invNum" + invNumber + "{ Item Name= " + itemName + "Item Price= " + itemPrice + "Count= " + itemCount + "}\n");
 
                     }
-                     frame.setInvoiceHeadersList(invoiceHeadersList);
+                    frame.setInvoiceHeadersList(invoiceHeadersList);
 
                 }
             } catch (FileNotFoundException ex) {
@@ -364,15 +373,17 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         }
 
     }
- private InvoiceHeader getInvoiceHeaderById(ArrayList<InvoiceHeader> invoices, int id) {
+
+    private InvoiceHeader getInvoiceHeaderById(ArrayList<InvoiceHeader> invoices, int id) {
         for (InvoiceHeader invoice : invoices) {
             if (invoice.getNum() == id) {
                 return invoice;
             }
         }
-        
+
         return null;
     }
+
     /**
      * ****************************************
      */
@@ -402,7 +413,5 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
         }
     }
-
-  
 
 }

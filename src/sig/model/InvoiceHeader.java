@@ -12,12 +12,13 @@ public class InvoiceHeader {
     private String customer;
     private Date date;
     private ArrayList<InvoiceLine> lines;
-
     public InvoiceHeader(){}
     public InvoiceHeader(int num, String customer, Date date) {
         this.num = num;
         this.customer = customer;
         this.date = date;
+        System.out.println("************from header"+"num= "+ num+" Customer= " +customer +" Date= "+ date);
+
         //System.out.println(" from Header"+"num ="+ num +"customer = "+customer +"Date = " +date);
     }
 
