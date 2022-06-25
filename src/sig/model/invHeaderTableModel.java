@@ -10,6 +10,12 @@ public class invHeaderTableModel extends AbstractTableModel {
     public invHeaderTableModel(ArrayList<InvoiceHeader> data) {
         this.data = data;
     }
+
+    public ArrayList<InvoiceHeader> getData() {
+        return data;
+    }
+
+    
     
  @Override
     public int getRowCount() {

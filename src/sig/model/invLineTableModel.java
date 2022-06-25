@@ -17,8 +17,6 @@ public class invLineTableModel extends AbstractTableModel {
     public  void addRowLine(){
         
     }
-    
-    
      @Override
      public int getRowCount() {
         return data.size();
@@ -47,6 +45,8 @@ public class invLineTableModel extends AbstractTableModel {
         return "";
     }
 
+   
+    
      @Override
         public String getColumnName(int column) {
         return cols[column];

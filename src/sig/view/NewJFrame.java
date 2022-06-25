@@ -4,6 +4,7 @@ package sig.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -300,6 +301,22 @@ public class NewJFrame extends javax.swing.JFrame
 
     public void setHandeler(ActionHandeler handeler) {
         this.handeler = handeler;
+    }
+
+    public void setCustomerLable(JLabel customerLable) {
+        this.customerLable = customerLable;
+    }
+
+    public void setDateLable(JLabel dateLable) {
+        this.dateLable = dateLable;
+    }
+
+    public void setNumberLable(JLabel numberLable) {
+        this.numberLable = numberLable;
+    }
+
+    public void setTotalLabel(JLabel totalLabel) {
+        this.totalLabel = totalLabel;
     }
 public void setInvoiceHeadersList(ArrayList<InvoiceHeader> invoiceHeadersList) {
         this.invoiceHeadersList = invoiceHeadersList;

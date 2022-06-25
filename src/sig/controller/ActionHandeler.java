@@ -71,8 +71,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         }
 
     }
-       ArrayList<InvoiceLine> invoiceLinesList = new ArrayList<>();
-
+    ArrayList<InvoiceLine> invoiceLinesList = new ArrayList<>();
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
@@ -82,9 +81,9 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         System.out.println(selectedRow);
         ArrayList<InvoiceLine> lines = frame.getInvoiceHeadersList().get(selectedRow).getLines();
         frame.getInvLineTable().setModel(new invLineTableModel(lines));
- invoiceLinesList= lines;
+        
+   invoiceLinesList=lines; 
     }
-
     /**
      * ********************************************
      */
@@ -98,8 +97,8 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
      * " New Invoice" **********************************
      */
     private void newInvoice() {
-        JFrame frame1 = new JFrame();
 
+        JFrame frame1 = new JFrame();
         frame1.setTitle("New Invoice");
         System.out.println("Action New Invoie");
 
@@ -113,16 +112,15 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         cancelBtn.addActionListener(this);
 
         frame1.setLayout(new FlowLayout());
-
         frame1.add(new JLabel("Invoce Date"));
         frame1.add(invDate); //textfield
         frame1.add(new JLabel("Customer"));
         frame1.add(customer);//textfield
-
         frame1.add(okBtn);
         frame1.add(cancelBtn);
 //parameters
-
+        int selectedRow = frame.getInvHeaderTable().getSelectedRow();
+        System.out.println(selectedRow);
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 // ArrayList<InvoiceHeader> invoiceHeadersList = new ArrayList<>();
@@ -164,7 +162,32 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
      * ****************************************
      */
     private void deleteInvoice() {
-        JFrame frame = new JFrame();
+
+        System.out.println("Action Delete Invoice");
+
+               /* ListSelectionModel tableModel=  frame.getInvHeaderTable().getSelectionModel();
+        System.out.println("/////"+tableModel);
+tableModel.addListSelectionListener(this); */
+                int selectedHeaderRow = frame.getInvHeaderTable().getSelectedRow();
+        System.out.println(selectedHeaderRow);
+
+        if (selectedHeaderRow != -1) {
+            ArrayList<InvoiceHeader> invoiceHeaderList = frame.getInvoiceHeadersList();
+
+            System.out.println(invoiceHeaderList);
+            invoiceHeaderList.remove(selectedHeaderRow);
+            System.out.println("............" + invoiceHeaderList);
+
+            frame.setInvoiceHeadersList(invoiceHeaderList);
+
+            JOptionPane.showMessageDialog(null, "invoice Deleted successfully");
+        } else if (selectedHeaderRow == -1) {
+            JOptionPane.showMessageDialog(null, "please Select Item");
+        
+        }
+
+
+        /*      JFrame frame = new JFrame();
 
         System.out.println("Action Delete invoice");
         frame.setTitle("Delete Invoice");
@@ -183,7 +206,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         frame.setSize(275, 100);
         frame.setLocation(100, 100);
         frame.setVisible(true);
-
+         */
     }
 
     /**
@@ -227,17 +250,18 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 itmName = itemName.getText();
                 price = Integer.valueOf(ItemPrice.getText());
                 count = Integer.valueOf(itemCount.getText());
-                // InvoiceLine invLine = new InvoiceLine(invHeder, itmName, price, count);
 
                 System.out.println("invoiceHeder=" + invHeder + " item Name= " + itmName + " Price= " + price + "Count= " + count);
-                //InvoiceHeader header = getInvoiceHeaderById(invoiceHeadersList, invoiceNum);
-                /*= findInvoice(invNumber);*/
                 System.out.println("invoiceHeder*******=" + invHeder + " item Name= " + itmName + " Price= " + price + "Count= " + count);
 
                 InvoiceLine invLine = new InvoiceLine(invHeder, itmName, price, count);
+                int selectedRow = frame.getInvHeaderTable().getSelectedRow();
+                System.out.println(selectedRow);
+                ArrayList<InvoiceLine> invoiceLinesList = frame.getInvoiceHeadersList().get(selectedRow).getLines();
+                // frame.getInvLineTable().setModel(new invLineTableModel(invoiceLinesList));
+
                 invoiceLinesList.add(invLine);
-                System.out.println(">>>>>>>>>>" + frame.getInvoiceLinesList());
-                //invoiceLinesList = frame.getInvoiceLinesList();
+               // System.out.println(">>>>>>>>>>" + frame.getInvoiceLinesList());
                 frame.setInvoiceLinesList(invoiceLinesList);
 
                 frame1.getContentPane().removeAll();
@@ -267,6 +291,26 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
      * **************************************************
      */
     private void deleteItem() {
+        System.out.println("Action Delete Item");
+        int selectedRow = frame.getInvLineTable().getSelectedRow();
+        System.out.println(selectedRow);
+        //InvoiceLine invLine = 
+        //System.out.println("............" +  frame.getInvLineTable().getr);
+
+        if (selectedRow != -1) {
+            //ArrayList<InvoiceLine> invoiceLineList = frame.getInvoiceLinesList();
+            System.out.println(invoiceLinesList);
+            invoiceLinesList.remove(selectedRow);
+            System.out.println("............" + invoiceLinesList);
+            frame.setInvoiceLinesList(invoiceLinesList);
+
+            JOptionPane.showMessageDialog(null, "Item Deleted successfully");
+        } else {
+            JOptionPane.showMessageDialog(null, "please Select Item");
+
+        }
+
+        /*
         JFrame frame = new JFrame();
 
         System.out.println("Action Delete Item");
@@ -289,7 +333,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
         frame.setSize(250, 100);
         frame.setLocation(100, 100);
-        frame.setVisible(true);
+        frame.setVisible(true);*/
     }
 
     /**

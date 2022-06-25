@@ -1,12 +1,15 @@
 
 package sig.model;
 
+import java.util.ArrayList;
+
 
 public class InvoiceLine {
      private InvoiceHeader invoice;
     private String name;
     private double price;
     private int count;
+ private ArrayList<InvoiceLine> data;
 
     public InvoiceLine(InvoiceHeader invoice, String name, double price, int count) {
         this.invoice = invoice;
