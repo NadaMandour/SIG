@@ -81,8 +81,34 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         System.out.println(selectedRow);
         ArrayList<InvoiceLine> lines = frame.getInvoiceHeadersList().get(selectedRow).getLines();
         frame.getInvLineTable().setModel(new invLineTableModel(lines));
-        
-   invoiceLinesList=lines; 
+        //  ---------   
+        invoiceLinesList = lines;
+        //display on labels
+        JLabel numLable = frame.getNumberLable();
+        frame.getInvoiceHeadersList().get(selectedRow).getNum();
+        numLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getNum()));
+        frame.setNumberLable(numLable);
+        System.out.println("-----" + numLable.getText());
+        //
+        JLabel custLable = frame.getCustomerLable();
+        frame.getInvoiceHeadersList().get(selectedRow).getCustomer();
+        custLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getCustomer()));
+        frame.setCustomerLable(custLable);
+        System.out.println("-----" + custLable.getText());
+        //
+
+        JLabel dateLabel = frame.getDateLable();
+        frame.getInvoiceHeadersList().get(selectedRow).getDate();
+        dateLabel.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getDate()));
+        frame.setDateLable(dateLabel);
+        System.out.println("-----" + dateLabel.getText());
+        //
+        JLabel totalLable = frame.getTotalLabel();
+        frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal();
+        totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
+        frame.setTotalLabel(totalLable);
+        System.out.println("-----" + totalLable.getText());
+
     }
     /**
      * ********************************************
@@ -165,10 +191,10 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
         System.out.println("Action Delete Invoice");
 
-               /* ListSelectionModel tableModel=  frame.getInvHeaderTable().getSelectionModel();
+        /* ListSelectionModel tableModel=  frame.getInvHeaderTable().getSelectionModel();
         System.out.println("/////"+tableModel);
 tableModel.addListSelectionListener(this); */
-                int selectedHeaderRow = frame.getInvHeaderTable().getSelectedRow();
+        int selectedHeaderRow = frame.getInvHeaderTable().getSelectedRow();
         System.out.println(selectedHeaderRow);
 
         if (selectedHeaderRow != -1) {
@@ -183,7 +209,7 @@ tableModel.addListSelectionListener(this); */
             JOptionPane.showMessageDialog(null, "invoice Deleted successfully");
         } else if (selectedHeaderRow == -1) {
             JOptionPane.showMessageDialog(null, "please Select Item");
-        
+
         }
 
 
@@ -261,9 +287,15 @@ tableModel.addListSelectionListener(this); */
                 // frame.getInvLineTable().setModel(new invLineTableModel(invoiceLinesList));
 
                 invoiceLinesList.add(invLine);
-               // System.out.println(">>>>>>>>>>" + frame.getInvoiceLinesList());
+                // System.out.println(">>>>>>>>>>" + frame.getInvoiceLinesList());
                 frame.setInvoiceLinesList(invoiceLinesList);
+//update toral label
+                JLabel totalLable = frame.getTotalLabel();
+                frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal();
+                totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
+                frame.setTotalLabel(totalLable);
 
+                System.out.println("-----" + totalLable.getText());
                 frame1.getContentPane().removeAll();
                 frame1.repaint();
                 frame1.setVisible(false);
@@ -438,16 +470,43 @@ tableModel.addListSelectionListener(this); */
         if (resultsHeader == JFileChooser.APPROVE_OPTION) {
             String path = fc.getSelectedFile().getPath();
             File file = new File(path);
+            ArrayList<InvoiceHeader> headersTable = frame.getInvoiceHeadersList();
+            System.out.println(headersTable);
+            invHeaderTableModel headerModel = new invHeaderTableModel(headersTable);
             try {
                 FileWriter fileWrite = new FileWriter(file);
                 BufferedWriter buffer = new BufferedWriter(fileWrite);
-                for (int i = 0; i < headerTable.getRowCount(); i++) {
-                    for (int j = 0; j < headerTable.getColumnCount(); j++) {
-                        buffer.write(headerTable.getValueAt(i, j).toString() + ",");
+                System.out.println("..>.>..>" + headerModel);
+
+                for (int i = 0; i < headerModel.getRowCount(); i++) {
+                    for (int j = 0; j < headerModel.getColumnCount(); j++) {
+                        buffer.write(headerModel.getValueAt(i, j).toString() + ",");
                     }
+
                     buffer.newLine();
                 }
-                buffer.close();
+                System.out.println("check save");
+
+                resultsHeader = fc.showOpenDialog(fc);
+                if (resultsHeader == JFileChooser.APPROVE_OPTION) {
+                    path = fc.getSelectedFile().getPath();
+                    file = new File(path);
+                    System.out.println(invoiceLinesList);
+                    invLineTableModel linesModel = new invLineTableModel(invoiceLinesList);
+                    System.out.println("..>.>..>" + linesModel);
+
+                    fileWrite = new FileWriter(file);
+                    buffer = new BufferedWriter(fileWrite);
+                    for (int i = 0; i < linesModel.getRowCount(); i++) {
+                        for (int j = 0; j < linesModel.getColumnCount(); j++) {
+                            buffer.write(linesModel.getValueAt(i, j).toString() + ",");
+                        }
+
+                        buffer.newLine();
+                    }
+                    buffer.close();
+
+                }
                 fileWrite.close();
             } catch (IOException ex) {
             }
