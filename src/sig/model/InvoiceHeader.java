@@ -17,9 +17,8 @@ public class InvoiceHeader {
         this.num = num;
         this.customer = customer;
         this.date = date;
-        System.out.println("************from header"+"num= "+ num+" Customer= " +customer +" Date= "+ date);
+        //System.out.println("************from header"+"num= "+ num+" Customer= " +customer +" Date= "+ date);
 
-        //System.out.println(" from Header"+"num ="+ num +"customer = "+customer +"Date = " +date);
     }
 
     public Date getDate() {
@@ -68,7 +67,7 @@ public class InvoiceHeader {
     }
    @Override
     public String toString() {
-        return "InvoiceHeader{" + "Invoice Num.=" + num + ", CustomerName=" + customer + ", Date=" + date + '}';
+        return "Invoice Num.=" + num + ", CustomerName=" + customer + ", Date=" + date + '}';
     }
 
 

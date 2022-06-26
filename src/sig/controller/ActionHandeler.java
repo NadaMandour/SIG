@@ -88,26 +88,26 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         frame.getInvoiceHeadersList().get(selectedRow).getNum();
         numLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getNum()));
         frame.setNumberLable(numLable);
-        System.out.println("-----" + numLable.getText());
+        //System.out.println("-----" + numLable.getText());
         //
         JLabel custLable = frame.getCustomerLable();
         frame.getInvoiceHeadersList().get(selectedRow).getCustomer();
         custLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getCustomer()));
         frame.setCustomerLable(custLable);
-        System.out.println("-----" + custLable.getText());
+        //System.out.println("-----" + custLable.getText());
         //
 
         JLabel dateLabel = frame.getDateLable();
         frame.getInvoiceHeadersList().get(selectedRow).getDate();
         dateLabel.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getDate()));
         frame.setDateLable(dateLabel);
-        System.out.println("-----" + dateLabel.getText());
+        // System.out.println("-----" + dateLabel.getText());
         //
         JLabel totalLable = frame.getTotalLabel();
         frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal();
         totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
         frame.setTotalLabel(totalLable);
-        System.out.println("-----" + totalLable.getText());
+        // System.out.println("-----" + totalLable.getText());
 
     }
     /**
@@ -164,7 +164,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 invoiceHeadersList.add(invHeder);
                 frame.setInvoiceHeadersList(invoiceHeadersList);
 
-                System.out.println("customer=  " + invoiceCustomer + "   Date= " + invoiceDate);
+                //System.out.println("customer=  " + invoiceCustomer + "   Date= " + invoiceDate);
                 frame1.getContentPane().removeAll();
                 frame1.repaint();
                 frame1.setVisible(false);
@@ -195,6 +195,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         System.out.println("/////"+tableModel);
 tableModel.addListSelectionListener(this); */
         int selectedHeaderRow = frame.getInvHeaderTable().getSelectedRow();
+        System.out.println("Row Selected");
         System.out.println(selectedHeaderRow);
 
         if (selectedHeaderRow != -1) {
@@ -202,13 +203,13 @@ tableModel.addListSelectionListener(this); */
 
             System.out.println(invoiceHeaderList);
             invoiceHeaderList.remove(selectedHeaderRow);
-            System.out.println("............" + invoiceHeaderList);
+            // System.out.println("............" + invoiceHeaderList);
 
             frame.setInvoiceHeadersList(invoiceHeaderList);
 
             JOptionPane.showMessageDialog(null, "invoice Deleted successfully");
         } else if (selectedHeaderRow == -1) {
-            JOptionPane.showMessageDialog(null, "please Select Item");
+            JOptionPane.showMessageDialog(null, "please Select Invoice");
 
         }
 
@@ -277,8 +278,7 @@ tableModel.addListSelectionListener(this); */
                 price = Integer.valueOf(ItemPrice.getText());
                 count = Integer.valueOf(itemCount.getText());
 
-                System.out.println("invoiceHeder=" + invHeder + " item Name= " + itmName + " Price= " + price + "Count= " + count);
-                System.out.println("invoiceHeder*******=" + invHeder + " item Name= " + itmName + " Price= " + price + "Count= " + count);
+                System.out.println("invoiceHeder=" + invHeder + "{ item Name= " + itmName + " Price= " + price + "Count= " + count + "}");
 
                 InvoiceLine invLine = new InvoiceLine(invHeder, itmName, price, count);
                 int selectedRow = frame.getInvHeaderTable().getSelectedRow();
@@ -295,7 +295,7 @@ tableModel.addListSelectionListener(this); */
                 totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
                 frame.setTotalLabel(totalLable);
 
-                System.out.println("-----" + totalLable.getText());
+                // System.out.println("-----" + totalLable.getText());
                 frame1.getContentPane().removeAll();
                 frame1.repaint();
                 frame1.setVisible(false);
@@ -326,14 +326,13 @@ tableModel.addListSelectionListener(this); */
         System.out.println("Action Delete Item");
         int selectedRow = frame.getInvLineTable().getSelectedRow();
         System.out.println(selectedRow);
-        //InvoiceLine invLine = 
         //System.out.println("............" +  frame.getInvLineTable().getr);
 
         if (selectedRow != -1) {
             //ArrayList<InvoiceLine> invoiceLineList = frame.getInvoiceLinesList();
             System.out.println(invoiceLinesList);
             invoiceLinesList.remove(selectedRow);
-            System.out.println("............" + invoiceLinesList);
+            //System.out.println("............" + invoiceLinesList);
             frame.setInvoiceLinesList(invoiceLinesList);
 
             //update toral label
@@ -342,8 +341,7 @@ tableModel.addListSelectionListener(this); */
             totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
             frame.setTotalLabel(totalLable);
 
-            System.out.println("-----" + totalLable.getText());
-
+            // System.out.println("-----" + totalLable.getText());
             JOptionPane.showMessageDialog(null, "Item Deleted successfully");
         } else {
             JOptionPane.showMessageDialog(null, "please Select Item");
@@ -402,12 +400,14 @@ tableModel.addListSelectionListener(this); */
 
                     int invNum = Integer.parseInt(invNumS);
 
-                    SimpleDateFormat df= new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     Date invDate = df.parse(invDateS);
-                    //System.out.println("inoice Header= { " + " Number" + invNumS + "InvoiceDate= " + invDateS + "Customer Name= " + customerName + "}\n");
+//              System.out.println("invoiceHeder=" + invHeder + "{ item Name= " + itmName + " Price= " + price + "Count= " + count+"}");
 
+                    //                  System.out.println("inoice Header= { " + " Number" + invNumS + "InvoiceDate= " + invDateS + "Customer Name= " + customerName + "}\n");
                     InvoiceHeader invHeader = new InvoiceHeader(invNum, customerName, invDate);
                     invoiceHeadersList.add(invHeader);
+                    //System.out.println(invoiceHeadersList);
 
                 }
                 System.out.println("check");
@@ -419,6 +419,7 @@ tableModel.addListSelectionListener(this); */
                     File fileLine = new File(path);
                     BufferedReader bufferLine = new BufferedReader(new FileReader(fileLine));
                     String fileLines = null;
+                    int prev = 0;
 
                     while ((fileLines = bufferLine.readLine()) != null) {
                         String[] dataInLineRow = fileLines.split(",");
@@ -431,12 +432,20 @@ tableModel.addListSelectionListener(this); */
                         double itemPrice = Double.valueOf(itemPriceS);
                         int itemCount = Integer.valueOf(itemCountS);
                         InvoiceHeader header = getInvoiceHeaderById(invoiceHeadersList, invNumber);/*= findInvoice(invNumber);*/
+                        if (prev != invNumber) {
+                            prev = invNumber;
+                            System.out.println(header);
+                        }
                         InvoiceLine invLine = new InvoiceLine(header, itemName, itemPrice, itemCount);
                         header.getLines().add(invLine);
-                        //System.out.println(" invNum" + invNumber + "{ Item Name= " + itemName + "Item Price= " + itemPrice + "Count= " + itemCount + "}\n");
+                       //        System.out.println(header);
+                        System.out.println( invLine );
+//                        System.out.println(" invNum" + invNumber + "{ Item Name= " + itemName + "Item Price= " + itemPrice + "Count= " + itemCount + "}\n");
                         invHeder = header;
+
                     }
                     frame.setInvoiceHeadersList(invoiceHeadersList);
+                    //System.out.println(invoiceHeadersList);
 
                 }
             } catch (FileNotFoundException ex) {
@@ -451,15 +460,17 @@ tableModel.addListSelectionListener(this); */
                 Logger.getLogger(ActionHandeler.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            //javax.swing.JTable headerTable = getheaderTable();
         }
-
+        //ArrayList<InvoiceLine> lines = frame.getInvoiceHeadersList().get(0).getLines();
+        //System.out.println(lines);
     }
 
+    
     private InvoiceHeader getInvoiceHeaderById(ArrayList<InvoiceHeader> invoices, int id) {
         for (InvoiceHeader invoice : invoices) {
             if (invoice.getNum() == id) {
                 return invoice;
+
             }
         }
 
@@ -485,13 +496,13 @@ tableModel.addListSelectionListener(this); */
             try {
                 FileWriter fileWrite = new FileWriter(file);
                 BufferedWriter buffer = new BufferedWriter(fileWrite);
-                System.out.println("..>.Column>..>" + headerModel.getColumnCount());
-                System.out.println("..>.>Row..>" + headerModel.getRowCount());
+                //System.out.println("..>.Column>..>" + headerModel.getColumnCount());
+                //System.out.println("..>.>Row..>" + headerModel.getRowCount());
 
                 for (int i = 0; i < headerModel.getRowCount(); i++) {
                     for (int j = 0; j < headerModel.getColumnCount(); j++) {
                         buffer.write(headerModel.getValueAt(i, j).toString() + ",");
-                        System.out.println("!!!!!!!!!!" + headerModel.getValueAt(i, j).toString());
+                        //System.out.println("!!!!!!!!!!" + headerModel.getValueAt(i, j).toString());
                     }
 
                     buffer.newLine();
@@ -499,34 +510,31 @@ tableModel.addListSelectionListener(this); */
                 buffer.close();
 
                 System.out.println("check save");
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
             }
         }
-                resultsHeader = fc.showOpenDialog(fc);
-                if (resultsHeader == JFileChooser.APPROVE_OPTION) {
-                    String path2 = fc.getSelectedFile().getPath();
-                    File file2 = new File(path2);
-                    System.out.println(invoiceLinesList);
-                    invLineTableModel linesModel = new invLineTableModel(invoiceLinesList);
-                    System.out.println("..>.>..>" + linesModel);
- try {
-                   FileWriter fileWrite2 = new FileWriter(file2);
-                    BufferedWriter buffer2 = new BufferedWriter(fileWrite2);
-                    for (int i = 0; i < linesModel.getRowCount(); i++) {
-                        for (int j = 0; j < linesModel.getColumnCount(); j++) {
-                            buffer2.write(linesModel.getValueAt(i, j).toString() + ",");
-                        }
-
-                        buffer2.newLine();
+        resultsHeader = fc.showOpenDialog(fc);
+        if (resultsHeader == JFileChooser.APPROVE_OPTION) {
+            String path2 = fc.getSelectedFile().getPath();
+            File file2 = new File(path2);
+            System.out.println(invoiceLinesList);
+            invLineTableModel linesModel = new invLineTableModel(invoiceLinesList);
+            //System.out.println("..>.>..>" + linesModel);
+            try {
+                FileWriter fileWrite2 = new FileWriter(file2);
+                BufferedWriter buffer2 = new BufferedWriter(fileWrite2);
+                for (int i = 0; i < linesModel.getRowCount(); i++) {
+                    for (int j = 0; j < linesModel.getColumnCount(); j++) {
+                        buffer2.write(linesModel.getValueAt(i, j).toString() + ",");
                     }
-                    buffer2.close();
 
-                
+                    buffer2.newLine();
+                }
+                buffer2.close();
+
                 fileWrite2.close();
             } catch (IOException ex) {
             }
         }
-        }
     }
-
+}
