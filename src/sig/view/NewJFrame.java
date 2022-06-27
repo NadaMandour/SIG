@@ -59,9 +59,9 @@ public class NewJFrame extends javax.swing.JFrame
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        numberLable = new javax.swing.JLabel();
-        customerLable = new javax.swing.JLabel();
-        dateLable = new javax.swing.JLabel();
+        numberLabel = new javax.swing.JLabel();
+        customerLabel = new javax.swing.JLabel();
+        dateLabel = new javax.swing.JLabel();
         totalLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lineTable = new javax.swing.JTable();
@@ -106,11 +106,11 @@ public class NewJFrame extends javax.swing.JFrame
 
         jLabel4.setText("Total");
 
-        numberLable.setText("----------------");
+        numberLabel.setText("----------------");
 
-        customerLable.setText("----------------");
+        customerLabel.setText("----------------");
 
-        dateLable.setText("----------------");
+        dateLabel.setText("----------------");
 
         totalLabel.setText("----------------");
 
@@ -172,9 +172,9 @@ public class NewJFrame extends javax.swing.JFrame
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dateLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(numberLable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(customerLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(numberLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(customerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(totalLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -196,7 +196,7 @@ public class NewJFrame extends javax.swing.JFrame
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(numberLable, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(numberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(11, 11, 11)
@@ -204,11 +204,11 @@ public class NewJFrame extends javax.swing.JFrame
                                 .addGap(8, 8, 8))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(customerLable, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(customerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
@@ -281,8 +281,8 @@ public class NewJFrame extends javax.swing.JFrame
     }
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel customerLable;
-    private javax.swing.JLabel dateLable;
+    private javax.swing.JLabel customerLabel;
+    private javax.swing.JLabel dateLabel;
     private javax.swing.JButton deleteInvoiceBtn;
     private javax.swing.JButton deleteItemBtn;
     private javax.swing.JTable headerTable;
@@ -298,7 +298,7 @@ public class NewJFrame extends javax.swing.JFrame
     private javax.swing.JMenuItem loadMenu;
     private javax.swing.JButton newInvoiceBtn;
     private javax.swing.JButton newItemBtn;
-    private javax.swing.JLabel numberLable;
+    private javax.swing.JLabel numberLabel;
     private javax.swing.JMenuItem saveMenu;
     private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
@@ -317,32 +317,32 @@ public class NewJFrame extends javax.swing.JFrame
         this.handeler = handeler;
     }
 
-    public void setCustomerLable(JLabel customerLable) {
-        this.customerLable = customerLable;
+    public void setCustomerLabel(JLabel customerLable) {
+        this.customerLabel = customerLable;
     }
 
-    public void setDateLable(JLabel dateLable) {
-        this.dateLable = dateLable;
+    public void setDateLabel(JLabel dateLable) {
+        this.dateLabel = dateLable;
     }
 
-    public void setNumberLable(JLabel numberLable) {
-        this.numberLable = numberLable;
+    public void setNumberLabel(JLabel numberLable) {
+        this.numberLabel = numberLable;
     }
 
     public void setTotalLabel(JLabel totalLabel) {
         this.totalLabel = totalLabel;
     }
 
-    public JLabel getCustomerLable() {
-        return customerLable;
+    public JLabel getCustomerLabel() {
+        return customerLabel;
     }
 
     public JLabel getDateLable() {
-        return dateLable;
+        return dateLabel;
     }
 
     public JLabel getNumberLable() {
-        return numberLable;
+        return numberLabel;
     }
 
     public JLabel getTotalLabel() {
