@@ -15,7 +15,7 @@ public class invHeaderTableModel extends AbstractTableModel {
         return data;
     }
 
-    
+
     
  @Override
     public int getRowCount() {

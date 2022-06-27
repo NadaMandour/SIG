@@ -69,7 +69,8 @@ public class InvoiceHeader {
     public String toString() {
         return "Invoice Num.=" + num + ", CustomerName=" + customer + ", Date=" + date + '}';
     }
-
+ 
+    
 
    
     

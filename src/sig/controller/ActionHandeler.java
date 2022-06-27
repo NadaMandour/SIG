@@ -75,7 +75,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        if (frame.getInvHeaderTable().getSelectedRow() != -1 ) {
+        if (frame.getInvHeaderTable().getSelectedRow() != -1) {
             System.out.println("Row Selected");
 
             int selectedRow = frame.getInvHeaderTable().getSelectedRow();
@@ -109,13 +109,14 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
             totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
             frame.setTotalLabel(totalLable);
             // System.out.println("-----" + totalLable.getText());
-        } /*else if (frame.getInvHeaderTable().getSelectedRow() == -1) {
+        }
+        /*else if (frame.getInvHeaderTable().getSelectedRow() == -1) {
             frame.getInvHeaderTable().setRowSelectionInterval(0, 0);
         }
         else if (frame.getInvLineTable().getSelectedRow() == -1) {
             frame.getInvLineTable().setRowSelectionInterval(0, 0);
         }
-*/
+         */
     }
     /**
      * ********************************************
@@ -154,7 +155,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 //parameters
         // frame.getInvLineTable().getSelectionModel().clearSelection();
         // frame.getInvHeaderTable().getSelectionModel().clearSelection();
-       
+
         // System.out.println(selectedRow);
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
@@ -168,15 +169,22 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                     invoiceDate = new SimpleDateFormat("dd-MM-yyyy").parse(invDate.getText());
                 } catch (ParseException ex) {
                 }
-                //invoiceNum = invoiceNum+(invHeder.getNum());
-                //         System.out.println("inv num +++  "+ invoiceNum);
-//display on table
+               //display on table
+                ArrayList<InvoiceHeader> invoiceHeaderList = frame.getInvoiceHeadersList();
+
+                if (invoiceHeaderList.isEmpty()) {
+                    invoiceNum = 1;
+                } else {
+                    invoiceNum = (getLastInvoiceNumber(invoiceHeaderList)) + 1;
+                }
                 invHeder = new InvoiceHeader(invoiceNum, invoiceCustomer, invoiceDate);
                 invoiceHeadersList.add(invHeder);
                 frame.setInvoiceHeadersList(invoiceHeadersList);
-frame.getInvHeaderTable().setRowSelectionAllowed(true);
+                // for handling row selection excepitions
+                frame.getInvHeaderTable().setRowSelectionAllowed(true);
                 frame.getInvLineTable().setRowSelectionAllowed(true);
-                //System.out.println("customer=  " + invoiceCustomer + "   Date= " + invoiceDate);
+               
+                //System.out.println("custome0r=  " + invoiceCustomer + "   Date= " + invoiceDate);
                 frame1.getContentPane().removeAll();
                 frame1.repaint();
                 frame1.setVisible(false);
@@ -486,6 +494,18 @@ frame.getInvHeaderTable().setRowSelectionAllowed(true);
         }
 
         return null;
+    }
+
+    private int getLastInvoiceNumber(ArrayList<InvoiceHeader> invoices) {
+        int lastInvNumber = 0;
+        for (InvoiceHeader invoice : invoices) {
+            if (invoice.getNum() > lastInvNumber) {
+                lastInvNumber = invoice.getNum();
+            }
+        }
+
+        return lastInvNumber;
+
     }
 
     /**
