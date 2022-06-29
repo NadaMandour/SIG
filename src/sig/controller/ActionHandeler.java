@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import sig.model.invHeaderTableModel;
 import sig.model.invLineTableModel;
 import sig.view.NewJFrame;
@@ -136,7 +136,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         frame1.setTitle("New Invoice");
         System.out.println("Action New Invoie");
 
-        JTextField invDate = new JTextField(20);
+        JTextField invDateTextField = new JTextField(20);
         JTextField customer = new JTextField(20);
         JButton okBtn = new JButton("OK");
         okBtn.setActionCommand("okInv");
@@ -147,7 +147,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
         frame1.setLayout(new FlowLayout());
         frame1.add(new JLabel("Invoce Date"));
-        frame1.add(invDate); //textfield
+        frame1.add(invDateTextField); //textfield
         frame1.add(new JLabel("Customer"));
         frame1.add(customer);//textfield
         frame1.add(okBtn);
@@ -166,10 +166,15 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 System.out.println("action from Ok Btn");
                 invoiceCustomer = customer.getText();
                 try {
-                    invoiceDate = new SimpleDateFormat("dd-MM-yyyy").parse(invDate.getText());
+                    
+                  Date  invoiceDateD = new SimpleDateFormat("dd-MM-yyyy").parse(invDateTextField.getText());
+                    DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+                     invoiceDate = (Date) formatter.parse(invoiceDateD.toString());
+                     System.out.println(invoiceDate);
+                    
                 } catch (ParseException ex) {
                 }
-               //display on table
+                //display on table
                 ArrayList<InvoiceHeader> invoiceHeaderList = frame.getInvoiceHeadersList();
 
                 if (invoiceHeaderList.isEmpty()) {
@@ -177,13 +182,14 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 } else {
                     invoiceNum = (getLastInvoiceNumber(invoiceHeaderList)) + 1;
                 }
-                invHeder = new InvoiceHeader(invoiceNum, invoiceCustomer, invoiceDate);
+                double invHeaderTotal = 0;
+                invHeder = new InvoiceHeader(invoiceNum, invoiceCustomer, invoiceDate, invHeaderTotal);
                 invoiceHeadersList.add(invHeder);
                 frame.setInvoiceHeadersList(invoiceHeadersList);
                 // for handling row selection excepitions
                 frame.getInvHeaderTable().setRowSelectionAllowed(true);
                 frame.getInvLineTable().setRowSelectionAllowed(true);
-               
+
                 //System.out.println("custome0r=  " + invoiceCustomer + "   Date= " + invoiceDate);
                 frame1.getContentPane().removeAll();
                 frame1.repaint();
@@ -226,7 +232,6 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
             // System.out.println("............" + invoiceHeaderList);
 
             frame.setInvoiceHeadersList(invoiceHeaderList);
-
             JOptionPane.showMessageDialog(null, "invoice Deleted successfully");
         } else if (selectedHeaderRow == -1) {
             JOptionPane.showMessageDialog(null, "please Select Invoice");
@@ -294,6 +299,9 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("action from Ok Btn");
+              frame.getInvHeaderTable().setRowSelectionAllowed(false);
+                frame.getInvLineTable().setRowSelectionAllowed(false);
+
                 itmName = itemName.getText();
                 price = Integer.valueOf(ItemPrice.getText());
                 count = Integer.valueOf(itemCount.getText());
@@ -314,6 +322,8 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal();
                 totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
                 frame.setTotalLabel(totalLable);
+frame.getInvHeaderTable().setRowSelectionAllowed(true);
+                frame.getInvLineTable().setRowSelectionAllowed(true);
 
                 // System.out.println("-----" + totalLable.getText());
                 frame1.getContentPane().removeAll();
@@ -404,7 +414,10 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
 // header file reading
         JFileChooser fc = new JFileChooser();
+        JOptionPane.showMessageDialog(null, "Please Select Invoice Header File");
+
         int results = fc.showOpenDialog(fc);
+
         if (results == JFileChooser.APPROVE_OPTION) {
             String path = fc.getSelectedFile().getPath();
             File file = new File(path);
@@ -422,10 +435,15 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
 
                     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     Date invDate = df.parse(invDateS);
-//              System.out.println("invoiceHeder=" + invHeder + "{ item Name= " + itmName + " Price= " + price + "Count= " + count+"}");
+                    
 
+//              System.out.println("invoiceHeder=" + invHeder + "{ item Name= " + itmName + " Price= " + price + "Count= " + count+"}");
                     //                  System.out.println("inoice Header= { " + " Number" + invNumS + "InvoiceDate= " + invDateS + "Customer Name= " + customerName + "}\n");
-                    InvoiceHeader invHeader = new InvoiceHeader(invNum, customerName, invDate);
+                    double invHeaderTotal = 0;
+                    InvoiceHeader invHeader = new InvoiceHeader(invNum, customerName, invDate, invHeaderTotal);
+                    invHeaderTotal = invHeader.getInvoiceTotal();
+                    //System.out.println("invHeaderTotal" + invHeaderTotal);
+
                     invoiceHeadersList.add(invHeader);
                     //System.out.println(invoiceHeadersList);
 
@@ -433,6 +451,8 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 System.out.println("check");
 
                 // open lines
+                JOptionPane.showMessageDialog(null, "Please Select Item Lines File");
+
                 results = fc.showOpenDialog(fc);
                 if (results == JFileChooser.APPROVE_OPTION) {
                     path = fc.getSelectedFile().getPath();
@@ -462,12 +482,25 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                         System.out.println(invLine);
 //                        System.out.println(" invNum" + invNumber + "{ Item Name= " + itemName + "Item Price= " + itemPrice + "Count= " + itemCount + "}\n");
                         invHeder = header;
+                    }
+
+                    frame.setInvoiceHeadersList(invoiceHeadersList);
+                    for (InvoiceHeader invoice : invoiceHeadersList) {
+                        //  System.out.println("--////--invHeaderTotal method check-///--");
+
+                        double invHeaderTotal = invoice.getInvoiceTotal();
+                        //  System.out.println("--/////--invHeaderTotal---" + invHeaderTotal);
+
+                        int i = 0;
+                        int columnCount = frame.getInvHeaderTable().getColumnCount();
+
+                        frame.getInvHeaderTable().setValueAt(invHeaderTotal, i, columnCount - 1);
+                        i++;
+                        //  System.out.println("----invHeaderTotal---" + invHeaderTotal);
 
                     }
-                    frame.setInvoiceHeadersList(invoiceHeadersList);
-                    //System.out.println(invoiceHeadersList);
-
                 }
+
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(frame, "File Not Found/n" + ex.getMessage() + JOptionPane.ERROR_MESSAGE);
@@ -481,6 +514,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
             }
 
         }
+
         //ArrayList<InvoiceLine> lines = frame.getInvoiceHeadersList().get(0).getLines();
         //System.out.println(lines);
     }
@@ -496,6 +530,23 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         return null;
     }
 
+   /* private  String dateFormater(Date format)
+    {
+     
+        String date = format.toString();
+        DateTimeFormatter f = DateTimeFormatter.ofPattern( "E MMM dd HH:mm:ss z uuuu" ).withLocale( Locale.US );
+ 
+ZonedDateTime zdt = ZonedDateTime.parse( date , f );
+ 
+LocalDate ld = zdt.toLocalDate();
+DateTimeFormatter fLocalDate = DateTimeFormatter.ofPattern( "dd-MM-uuuu" );
+String outputDate = ld.format( fLocalDate) ;
+        
+        return outputDate;
+        
+    }
+    */
+    
     private int getLastInvoiceNumber(ArrayList<InvoiceHeader> invoices) {
         int lastInvNumber = 0;
         for (InvoiceHeader invoice : invoices) {
@@ -515,7 +566,11 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         // JTable headerTable = new JTable(model);
 
         System.out.println("Action Save File");
+        ArrayList<InvoiceHeader> invheadersTable = frame.getInvoiceHeadersList();
+        //System.out.println(" header list before" + invheadersTable);
         JFileChooser fc = new JFileChooser();
+        JOptionPane.showMessageDialog(null, "Please Select Invoices File or Create a new one");
+
         int resultsHeader = fc.showOpenDialog(fc);
 
         if (resultsHeader == JFileChooser.APPROVE_OPTION) {
@@ -531,9 +586,11 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 //System.out.println("..>.>Row..>" + headerModel.getRowCount());
 
                 for (int i = 0; i < headerModel.getRowCount(); i++) {
-                    for (int j = 0; j < headerModel.getColumnCount(); j++) {
 
-                        buffer.write(headerModel.getValueAt(i, j).toString() + ",");
+                    for (int j = 0; j < headerModel.getColumnCount() - 1; j++) {
+                        buffer.write(String.valueOf(headerModel.getValueAt(i, j)) + ",");
+
+                        //buffer.write(headerModel.getValueAt(i, j).toString() + ",");
                         //System.out.println("!!!!!!!!!!" + headerModel.getValueAt(i, j).toString());
                     }
 
@@ -542,31 +599,56 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 buffer.close();
 
                 System.out.println("check save");
+                //System.out.println(" header list after" + invheadersTable);
+
             } catch (IOException ex) {
             }
         }
+        JOptionPane.showMessageDialog(null, "Please Select Items File or Create a new one");
+
         resultsHeader = fc.showOpenDialog(fc);
         if (resultsHeader == JFileChooser.APPROVE_OPTION) {
+
             String path2 = fc.getSelectedFile().getPath();
             File file2 = new File(path2);
-            System.out.println(invoiceLinesList);
-            invLineTableModel linesModel = new invLineTableModel(invoiceLinesList);
-            //System.out.println("..>.>..>" + linesModel);
+            FileWriter fileWrite2 = null;
+            BufferedWriter buffer2 = null;
             try {
-                FileWriter fileWrite2 = new FileWriter(file2);
-                BufferedWriter buffer2 = new BufferedWriter(fileWrite2);
-                for (int i = 0; i < linesModel.getRowCount(); i++) {
-                    for (int j = 0; j < linesModel.getColumnCount(); j++) {
-                        buffer2.write(linesModel.getValueAt(i, j).toString() + ",");
+                fileWrite2 = new FileWriter(file2);
+                buffer2 = new BufferedWriter(fileWrite2);
+                for (InvoiceHeader invoice : invheadersTable) {
+                    int invNum = invoice.getNum();
+                    ArrayList<InvoiceLine> linesTable = invoice.getLines();
+                    System.out.println(" line table " + linesTable);
+
+                    // linesTable = frame.getInvoiceLinesList();
+                    invLineTableModel linesModel = new invLineTableModel(linesTable);
+                    System.out.println("..>.>..>" + linesModel);
+
+                    System.out.println("..>.Rows >..>" + linesModel.getRowCount());
+                    System.out.println("..>.Columns>..>" + linesModel.getColumnCount());
+
+                    for (int i = 0; i < linesModel.getRowCount(); i++) {
+                        buffer2.write(invNum + ",");
+                        for (int j = 0; j < linesModel.getColumnCount() - 1; j++) {
+                            buffer2.write(linesModel.getValueAt(i, j).toString() + ",");
+                            // System.out.println("in file >>>>>>." + invNum + "," + linesModel.getValueAt(i, j).toString() + ",");
+
+                        }
+
+                        buffer2.newLine();
                     }
 
-                    buffer2.newLine();
                 }
                 buffer2.close();
 
                 fileWrite2.close();
+
             } catch (IOException ex) {
+
             }
+
         }
     }
+
 }

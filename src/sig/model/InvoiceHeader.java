@@ -1,9 +1,12 @@
 
 package sig.model;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.swing.table.DefaultTableModel;
+import java.util.Locale;
 
 
 public class InvoiceHeader {
@@ -13,7 +16,7 @@ public class InvoiceHeader {
     private Date date;
     private ArrayList<InvoiceLine> lines;
     public InvoiceHeader(){}
-    public InvoiceHeader(int num, String customer, Date date) {
+    public InvoiceHeader(int num, String customer, Date date, double total) {
         this.num = num;
         this.customer = customer;
         this.date = date;
@@ -65,9 +68,26 @@ public class InvoiceHeader {
         }
         return total;
     }
+   
+   private  String dateFormater(Date format)
+    {
+     
+        String date = format.toString();
+        DateTimeFormatter f = DateTimeFormatter.ofPattern( "E MMM dd HH:mm:ss z uuuu" ).withLocale( Locale.US );
+ 
+ZonedDateTime zdt = ZonedDateTime.parse( date , f );
+ 
+LocalDate ld = zdt.toLocalDate();
+DateTimeFormatter fLocalDate = DateTimeFormatter.ofPattern( "dd-MM-uuuu" );
+String outputDate = ld.format( fLocalDate) ;
+        
+        return outputDate;
+        
+    }
    @Override
+   
     public String toString() {
-        return "Invoice Num.=" + num + ", CustomerName=" + customer + ", Date=" + date + '}';
+        return "Invoice Num.=" + num + ", CustomerName=" + customer + ", Date=" + dateFormater(date)+ ", Total=" + getInvoiceTotal() + '}';
     }
  
     

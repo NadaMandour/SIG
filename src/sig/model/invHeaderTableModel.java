@@ -5,7 +5,7 @@ import javax.swing.table.AbstractTableModel;
 
 public class invHeaderTableModel extends AbstractTableModel {
  private ArrayList<InvoiceHeader> data;
-    private String[] cols = {"Num", "Customer Name", "Invoice Date"};
+    private String[] cols = {"Num", "Customer Name", "Invoice Date","total"};
 
     public invHeaderTableModel(ArrayList<InvoiceHeader> data) {
         this.data = data;
@@ -37,6 +37,8 @@ public class invHeaderTableModel extends AbstractTableModel {
                 return header.getCustomer();
             case 2:
                 return header.getDate();
+                case 3:
+                return header.getInvoiceTotal();
                 
         }
         return "";
