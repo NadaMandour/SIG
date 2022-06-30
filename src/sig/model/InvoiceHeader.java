@@ -16,7 +16,7 @@ public class InvoiceHeader {
     private Date date;
     private ArrayList<InvoiceLine> lines;
     public InvoiceHeader(){}
-    public InvoiceHeader(int num, String customer, Date date, double total) {
+    public InvoiceHeader(int num,  Date date,String customer, double total) {
         this.num = num;
         this.customer = customer;
         this.date = date;

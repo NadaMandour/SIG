@@ -23,8 +23,12 @@ import javax.swing.JTextField;
 import sig.model.InvoiceLine;
 import sig.model.InvoiceHeader;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import sig.model.invHeaderTableModel;
@@ -166,12 +170,12 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 System.out.println("action from Ok Btn");
                 invoiceCustomer = customer.getText();
                 try {
-                    
-                  Date  invoiceDateD = new SimpleDateFormat("dd-MM-yyyy").parse(invDateTextField.getText());
+
+                    Date invoiceDateD = new SimpleDateFormat("dd-MM-yyyy").parse(invDateTextField.getText());
                     DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
-                     invoiceDate = (Date) formatter.parse(invoiceDateD.toString());
-                     System.out.println(invoiceDate);
-                    
+                    invoiceDate = (Date) formatter.parse(invoiceDateD.toString());
+                    System.out.println(invoiceDate);
+
                 } catch (ParseException ex) {
                 }
                 //display on table
@@ -183,7 +187,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                     invoiceNum = (getLastInvoiceNumber(invoiceHeaderList)) + 1;
                 }
                 double invHeaderTotal = 0;
-                invHeder = new InvoiceHeader(invoiceNum, invoiceCustomer, invoiceDate, invHeaderTotal);
+                invHeder = new InvoiceHeader(invoiceNum, invoiceDate, invoiceCustomer, invHeaderTotal);
                 invoiceHeadersList.add(invHeder);
                 frame.setInvoiceHeadersList(invoiceHeadersList);
                 // for handling row selection excepitions
@@ -202,6 +206,8 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 frame1.getContentPane().removeAll();
                 frame1.repaint();
                 frame1.setVisible(false);
+                frame.getInvHeaderTable().setRowSelectionAllowed(true);
+                frame.getInvLineTable().setRowSelectionAllowed(true);
             }
         });
         //frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -299,7 +305,7 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 System.out.println("action from Ok Btn");
-              frame.getInvHeaderTable().setRowSelectionAllowed(false);
+                frame.getInvHeaderTable().setRowSelectionAllowed(false);
                 frame.getInvLineTable().setRowSelectionAllowed(false);
 
                 itmName = itemName.getText();
@@ -311,25 +317,30 @@ public class ActionHandeler implements ActionListener, ListSelectionListener {
                 InvoiceLine invLine = new InvoiceLine(invHeder, itmName, price, count);
                 int selectedRow = frame.getInvHeaderTable().getSelectedRow();
                 System.out.println(selectedRow);
-                ArrayList<InvoiceLine> invoiceLinesList = frame.getInvoiceHeadersList().get(selectedRow).getLines();
-                // frame.getInvLineTable().setModel(new invLineTableModel(invoiceLinesList));
+                if (selectedRow != -1) {
 
-                invoiceLinesList.add(invLine);
-                // System.out.println(">>>>>>>>>>" + frame.getInvoiceLinesList());
-                frame.setInvoiceLinesList(invoiceLinesList);
+                    ArrayList<InvoiceLine> invoiceLinesList = frame.getInvoiceHeadersList().get(selectedRow).getLines();
+                    // frame.getInvLineTable().setModel(new invLineTableModel(invoiceLinesList));
+
+                    invoiceLinesList.add(invLine);
+                    // System.out.println(">>>>>>>>>>" + frame.getInvoiceLinesList());
+                    frame.setInvoiceLinesList(invoiceLinesList);
 //update total label
-                JLabel totalLable = frame.getTotalLabel();
-                frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal();
-                totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
-                frame.setTotalLabel(totalLable);
-frame.getInvHeaderTable().setRowSelectionAllowed(true);
-                frame.getInvLineTable().setRowSelectionAllowed(true);
+                    JLabel totalLable = frame.getTotalLabel();
+                    frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal();
+                    totalLable.setText(String.valueOf(frame.getInvoiceHeadersList().get(selectedRow).getInvoiceTotal()));
+                    frame.setTotalLabel(totalLable);
+                    frame.getInvHeaderTable().setRowSelectionAllowed(true);
+                    frame.getInvLineTable().setRowSelectionAllowed(true);
 
-                // System.out.println("-----" + totalLable.getText());
-                frame1.getContentPane().removeAll();
-                frame1.repaint();
-                frame1.setVisible(false);
+                    // System.out.println("-----" + totalLable.getText());
+                    frame1.getContentPane().removeAll();
+                    frame1.repaint();
+                    frame1.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "please select Invoice first");
 
+                }
             }
         });
         cancelBtn.addActionListener(new ActionListener() {
@@ -338,11 +349,11 @@ frame.getInvHeaderTable().setRowSelectionAllowed(true);
                 frame1.getContentPane().removeAll();
                 frame1.repaint();
                 frame1.setVisible(false);
-
+                frame.getInvHeaderTable().setRowSelectionAllowed(true);
+                frame.getInvLineTable().setRowSelectionAllowed(true);
             }
         });
 
-        frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame1.setSize(350, 200);
         frame1.setLocation(100, 100);
         frame1.setVisible(true);
@@ -411,7 +422,8 @@ frame.getInvHeaderTable().setRowSelectionAllowed(true);
 
     private void loadeFile() {
         System.out.println("Action Load File");
-
+        frame.getInvHeaderTable().removeAll();
+        frame.getInvLineTable().removeAll();
 // header file reading
         JFileChooser fc = new JFileChooser();
         JOptionPane.showMessageDialog(null, "Please Select Invoice Header File");
@@ -435,12 +447,11 @@ frame.getInvHeaderTable().setRowSelectionAllowed(true);
 
                     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     Date invDate = df.parse(invDateS);
-                    
 
 //              System.out.println("invoiceHeder=" + invHeder + "{ item Name= " + itmName + " Price= " + price + "Count= " + count+"}");
                     //                  System.out.println("inoice Header= { " + " Number" + invNumS + "InvoiceDate= " + invDateS + "Customer Name= " + customerName + "}\n");
                     double invHeaderTotal = 0;
-                    InvoiceHeader invHeader = new InvoiceHeader(invNum, customerName, invDate, invHeaderTotal);
+                    InvoiceHeader invHeader = new InvoiceHeader(invNum, invDate, customerName, invHeaderTotal);
                     invHeaderTotal = invHeader.getInvoiceTotal();
                     //System.out.println("invHeaderTotal" + invHeaderTotal);
 
@@ -466,7 +477,7 @@ frame.getInvHeaderTable().setRowSelectionAllowed(true);
                         String invNumS = dataInLineRow[0];
                         String itemName = dataInLineRow[1];
                         String itemPriceS = dataInLineRow[2];
-                        String itemCountS = dataInLineRow[2];
+                        String itemCountS = dataInLineRow[3];
 
                         int invNumber = Integer.valueOf(invNumS);
                         double itemPrice = Double.valueOf(itemPriceS);
@@ -530,23 +541,20 @@ frame.getInvHeaderTable().setRowSelectionAllowed(true);
         return null;
     }
 
-   /* private  String dateFormater(Date format)
-    {
-     
-        String date = format.toString();
-        DateTimeFormatter f = DateTimeFormatter.ofPattern( "E MMM dd HH:mm:ss z uuuu" ).withLocale( Locale.US );
- 
-ZonedDateTime zdt = ZonedDateTime.parse( date , f );
- 
-LocalDate ld = zdt.toLocalDate();
-DateTimeFormatter fLocalDate = DateTimeFormatter.ofPattern( "dd-MM-uuuu" );
-String outputDate = ld.format( fLocalDate) ;
-        
+    private String dateFormater(String date) {
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z uuuu").withLocale(Locale.US);
+
+        ZonedDateTime zdt = ZonedDateTime.parse(date, f);
+
+        LocalDate ld = zdt.toLocalDate();
+        DateTimeFormatter fLocalDate = DateTimeFormatter.ofPattern("dd-MM-uuuu");
+        String outputDate = ld.format(fLocalDate);
+
         return outputDate;
-        
+
     }
-    */
-    
+
     private int getLastInvoiceNumber(ArrayList<InvoiceHeader> invoices) {
         int lastInvNumber = 0;
         for (InvoiceHeader invoice : invoices) {
@@ -588,8 +596,14 @@ String outputDate = ld.format( fLocalDate) ;
                 for (int i = 0; i < headerModel.getRowCount(); i++) {
 
                     for (int j = 0; j < headerModel.getColumnCount() - 1; j++) {
-                        buffer.write(String.valueOf(headerModel.getValueAt(i, j)) + ",");
+                        if (j == 1) {
+                            String dateLocal = headerModel.getValueAt(i, j).toString();
+                            dateLocal = dateFormater(dateLocal);
+                            buffer.write(dateLocal + ",");
 
+                        } else {
+                            buffer.write(String.valueOf(headerModel.getValueAt(i, j)) + ",");
+                        }
                         //buffer.write(headerModel.getValueAt(i, j).toString() + ",");
                         //System.out.println("!!!!!!!!!!" + headerModel.getValueAt(i, j).toString());
                     }
@@ -627,13 +641,12 @@ String outputDate = ld.format( fLocalDate) ;
 
                     System.out.println("..>.Rows >..>" + linesModel.getRowCount());
                     System.out.println("..>.Columns>..>" + linesModel.getColumnCount());
-
                     for (int i = 0; i < linesModel.getRowCount(); i++) {
                         buffer2.write(invNum + ",");
                         for (int j = 0; j < linesModel.getColumnCount() - 1; j++) {
+
                             buffer2.write(linesModel.getValueAt(i, j).toString() + ",");
                             // System.out.println("in file >>>>>>." + invNum + "," + linesModel.getValueAt(i, j).toString() + ",");
-
                         }
 
                         buffer2.newLine();
